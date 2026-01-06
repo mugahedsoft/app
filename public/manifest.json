@@ -1,0 +1,20 @@
+{
+  "name": "بيتزتي - Pizzeti",
+  "short_name": "بيتزتي",
+  "description": "تطبيق مطعم بيتزتي - اطلب البيتزا المفضلة لديك",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050206",
+  "theme_color": "#A10C18",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Farah';
+  src:
+    url('/fonts/Farah.woff2') format('woff2'),
+    url('/fonts/Farah.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  font-family: 'Tajawal', system-ui, 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+@layer components {
+  .surface {
+    @apply bg-smoke-950/50 backdrop-blur-lg border border-fire-500/10 shadow-glow-fire;
+  }
+
+  .surface-strong {
+    @apply bg-smoke-950/60 backdrop-blur-lg border border-fire-500/20 shadow-glow-fire;
+  }
+
+  .input-base {
+    @apply w-full p-4 bg-smoke-950/50 border border-fire-500/15 rounded-2xl text-right text-white placeholder:text-white/35 outline-none focus:border-fire-400 focus:ring-2 focus:ring-fire-500/30;
+  }
+
+  .btn-primary {
+    @apply w-full bg-gradient-to-r from-fire-700 via-fire-600 to-fire-500 text-white py-4 rounded-2xl font-bold shadow-glow-fire hover:shadow-glow-fire-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-fire-500/40 disabled:opacity-70 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-smoke-900/35 text-white/90 border border-fire-500/15 rounded-2xl py-3 font-bold hover:bg-smoke-850/45 transition-colors focus:outline-none focus:ring-2 focus:ring-fire-500/40;
+  }
+
+  .chip {
+    @apply px-6 py-3 rounded-full font-bold whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-fire-500/40;
+  }
+
+  .chip-active {
+    @apply bg-gradient-to-r from-fire-700 via-fire-600 to-fire-500 text-white shadow-glow-fire;
+  }
+
+  .chip-idle {
+    @apply bg-smoke-950/35 text-white/90 border border-fire-500/10 hover:border-fire-400/45 hover:bg-smoke-900/35;
+  }
+
+  .menu-board {
+    @apply grid gap-6;
+  }
+
+  .menu-panel {
+    @apply bg-smoke-950/50 backdrop-blur-md border border-white/60 shadow-glow-fire rounded-2xl p-4 transition-colors;
+  }
+
+  .menu-title {
+    position: relative;
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    border-radius: 0.9rem;
+    background:
+      linear-gradient(135deg, rgba(255, 45, 45, 0.98), rgba(161, 12, 24, 0.96));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.18),
+      0 18px 50px rgba(227, 18, 37, 0.22);
+    transform: translateY(-0.1rem);
+  }
+
+  .menu-title::before {
+    content: '';
+    position: absolute;
+    inset: -10px -14px;
+    background:
+      radial-gradient(18px 12px at 20% 40%, rgba(255, 255, 255, 0.20), transparent 60%),
+      radial-gradient(18px 12px at 80% 65%, rgba(0, 0, 0, 0.18), transparent 60%);
+    border-radius: 1.2rem;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .price-pill {
+    @apply inline-flex items-center justify-center px-3 py-1.5 rounded-xl font-black text-white shadow-glow-fire transition-transform focus:outline-none focus:ring-2 focus:ring-fire-500/40;
+    background: linear-gradient(135deg, rgba(255, 45, 45, 0.98), rgba(161, 12, 24, 0.96));
+    will-change: transform;
+  }
+
+  .price-pill:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 22px 70px rgba(227, 18, 37, 0.22),
+      0 10px 35px rgba(161, 12, 24, 0.30);
+  }
+
+  .price-pill:active {
+    transform: translateY(0px) scale(0.98);
+  }
+
+  .menu-row {
+    @apply flex items-center justify-between gap-3 py-2;
+    min-height: 44px;
+  }
+
+  .menu-name {
+    @apply text-white font-bold;
+  }
+
+  .menu-head {
+    @apply flex items-center justify-between text-white/85 font-bold text-sm mb-2;
+  }
+
+  .app-bg {
+    background-image:
+      radial-gradient(1200px circle at 15% 10%, rgba(255, 45, 45, 0.22), transparent 58%),
+      radial-gradient(900px circle at 85% 18%, rgba(227, 18, 37, 0.18), transparent 62%),
+      radial-gradient(850px circle at 55% 100%, rgba(103, 7, 15, 0.34), transparent 60%),
+      linear-gradient(135deg, rgba(5, 2, 6, 0.60) 0%, rgba(10, 5, 12, 0.55) 40%, rgba(42, 4, 6, 0.60) 100%),
+      url('/menu-bg.JPG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  .accent-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-accent-500 shadow-glow-accent;
+  }
+}
