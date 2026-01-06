@@ -123,7 +123,7 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
                 if (errors.area) setErrors(prev => ({ ...prev, area: undefined }));
               }}
               className="input-base"
-              placeholder="مثال: المعادي، شارع 9"
+              placeholder=" مثال: الفادني حي الم"
             />
             {errors.area && (
               <p className="mt-2 text-sm text-fire-300 text-right">{errors.area}</p>
