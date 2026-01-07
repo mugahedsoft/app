@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import {
  defaultMenuData,
- loadMenuData,
  resetMenuData,
  saveMenuData,
  type MenuData,
 } from '../../utils/menuStorage';
+import { fetchMenuFromServer, saveMenuToServer } from '../../utils/menuApi';
 
 type CategoryKey = keyof MenuData;
 
@@ -69,7 +69,7 @@ export function AdminApp() {
  const [pin, setPin] = useState('');
  const [pinError, setPinError] = useState<string | null>(null);
 
- const initial = useMemo(() => loadMenuData(), []);
+ const initial = useMemo(() => defaultMenuData, []);
  const [data, setData] = useState<MenuData>(initial);
  const [activeCategory, setActiveCategory] = useState<CategoryKey>('fatayerShami');
 
@@ -83,6 +83,10 @@ export function AdminApp() {
   }
   setPinError(null);
   setUnlocked(true);
+
+  fetchMenuFromServer().then((serverMenu) => {
+   if (serverMenu) setData(serverMenu);
+  });
  };
 
  const handleSave = () => {
@@ -90,8 +94,15 @@ export function AdminApp() {
   setSaveOk(null);
 
   try {
-   saveMenuData(data);
-   setSaveOk('تم الحفظ بنجاح');
+   const pinValue = pin.trim();
+   saveMenuToServer(data, pinValue).then((ok) => {
+    if (!ok) {
+     setSaveError('تعذر الحفظ على السيرفر - تأكد من إعدادات Vercel و Supabase');
+     return;
+    }
+    saveMenuData(data);
+    setSaveOk('تم الحفظ بنجاح');
+   });
   } catch (e) {
    setSaveError('تعذر الحفظ');
   }
@@ -99,8 +110,8 @@ export function AdminApp() {
 
  const handleReset = () => {
   resetMenuData();
-  const d = defaultMenuData;
-  setData(d);
+  setData(defaultMenuData);
+  setSaveError(null);
   setSaveOk('تمت إعادة الضبط إلى المنيو الافتراضي');
  };
 

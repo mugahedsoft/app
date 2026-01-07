@@ -3,7 +3,8 @@ import { ShoppingCart, Pizza } from 'lucide-react';
 import { CartView } from './components/CartView';
 import { CustomerForm } from './components/CustomerForm';
 import { storage } from './utils/storage';
-import { loadMenuData } from './utils/menuStorage';
+import { defaultMenuData, type MenuData } from './utils/menuStorage';
+import { fetchMenuFromServer } from './utils/menuApi';
 import { generateWhatsAppMessage, sendToWhatsApp } from './utils/whatsapp';
 import { CartItem, Product, CustomerInfo } from './types';
 
@@ -13,9 +14,21 @@ function App() {
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [cartPulse, setCartPulse] = useState(false);
+  const [menuData, setMenuData] = useState<MenuData>(defaultMenuData);
 
   useEffect(() => {
     setCart(storage.getCart());
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchMenuFromServer().then((data) => {
+      if (cancelled) return;
+      if (data) setMenuData(data);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -64,8 +77,6 @@ function App() {
     if (!q) return () => true;
     return (value: string) => value.toLowerCase().includes(q);
   }, [searchQuery]);
-
-  const menuData = useMemo(() => loadMenuData(), []);
 
   const handleRemoveFromCart = (index: number) => {
     setCart(cart.filter((_, i) => i !== index));
