@@ -15,6 +15,7 @@ export interface CartItem {
 export interface CustomerInfo {
   name: string;
   phone: string;
+  orderType: 'delivery' | 'pickup';
   area: string;
   deliveryNotes: string;
 }

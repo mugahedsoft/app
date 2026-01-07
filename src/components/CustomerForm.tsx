@@ -12,6 +12,7 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
   const [formData, setFormData] = useState<CustomerInfo>({
     name: '',
     phone: '',
+    orderType: 'delivery',
     area: '',
     deliveryNotes: ''
   });
@@ -31,7 +32,7 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
     const nextErrors: Partial<Record<keyof CustomerInfo, string>> = {};
 
     if (!data.name.trim()) nextErrors.name = 'الاسم مطلوب';
-    if (!data.area.trim()) nextErrors.area = 'المنطقة مطلوبة';
+    if (data.orderType === 'delivery' && !data.area.trim()) nextErrors.area = 'الموقع / العنوان مطلوب للتوصيل';
 
     const phoneNormalized = normalizePhone(data.phone);
     if (!phoneNormalized) {
@@ -66,7 +67,7 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="surface-strong rounded-2xl p-6 max-w-md w-full">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">بيانات التوصيل</h2>
+          <h2 className="text-2xl font-bold text-white">إكمال الطلب</h2>
           <button
             onClick={onClose}
             className="p-2 text-white/80 hover:text-white hover:bg-smoke-900/40 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-fire-500/40"
@@ -76,6 +77,26 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-right font-bold mb-2 text-white">طريقة الطلب *</label>
+            <select
+              value={formData.orderType}
+              onChange={(e) => {
+                const next = e.target.value as CustomerInfo['orderType'];
+                setFormData({
+                  ...formData,
+                  orderType: next,
+                  area: next === 'pickup' ? '' : formData.area,
+                });
+                if (errors.area) setErrors(prev => ({ ...prev, area: undefined }));
+              }}
+              className="input-base"
+            >
+              <option value="delivery">توصيل</option>
+              <option value="pickup">استلام</option>
+            </select>
+          </div>
+
           <div>
             <label className="block text-right font-bold mb-2 text-white">الاسم *</label>
             <input
@@ -112,23 +133,25 @@ export function CustomerForm({ onSubmit, onClose, initialData }: CustomerFormPro
             )}
           </div>
 
-          <div>
-            <label className="block text-right font-bold mb-2 text-white">المنطقة / الحي *</label>
-            <input
-              type="text"
-              required
-              value={formData.area}
-              onChange={(e) => {
-                setFormData({ ...formData, area: e.target.value });
-                if (errors.area) setErrors(prev => ({ ...prev, area: undefined }));
-              }}
-              className="input-base"
-              placeholder=" مثال: الفادني حي الم"
-            />
-            {errors.area && (
-              <p className="mt-2 text-sm text-fire-300 text-right">{errors.area}</p>
-            )}
-          </div>
+          {formData.orderType === 'delivery' && (
+            <div>
+              <label className="block text-right font-bold mb-2 text-white">الموقع / العنوان *</label>
+              <input
+                type="text"
+                required
+                value={formData.area}
+                onChange={(e) => {
+                  setFormData({ ...formData, area: e.target.value });
+                  if (errors.area) setErrors(prev => ({ ...prev, area: undefined }));
+                }}
+                className="input-base"
+                placeholder="مثال: الفادني - شارع كذا - بالقرب من..."
+              />
+              {errors.area && (
+                <p className="mt-2 text-sm text-fire-300 text-right">{errors.area}</p>
+              )}
+            </div>
+          )}
 
           <div>
             <label className="block text-right font-bold mb-2 text-white">ملاحظات التوصيل</label>

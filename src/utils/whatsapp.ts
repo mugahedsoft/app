@@ -19,12 +19,16 @@ export function generateWhatsAppMessage(
     .map(item => `- ${item.product.name} × ${item.quantity}${item.notes ? ` (${item.notes})` : ''}`)
     .join('\n');
 
+  const orderTypeLabel = customer.orderType === 'pickup' ? 'استلام' : 'توصيل';
+  const addressLine = customer.orderType === 'delivery' ? `📍 العنوان: ${customer.area}\n` : '';
+
   const message = `📌 *طلب جديد – بيتزتي* 🍕
 ━━━━━━━━━━━━
 
 👤 الاسم: ${customer.name}
 📞 الهاتف: ${customer.phone}
-📍 العنوان: ${customer.area}
+🚚 نوع الطلب: ${orderTypeLabel}
+${addressLine}
 
 ━━━━━━━━━━━━
 🧾 *الطلب:*
