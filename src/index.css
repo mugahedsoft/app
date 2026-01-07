@@ -130,6 +130,12 @@ body {
     background-attachment: fixed;
   }
 
+  @media (max-width: 768px) {
+    .app-bg {
+      background-attachment: scroll;
+    }
+  }
+
   .accent-dot {
     @apply inline-block w-2 h-2 rounded-full bg-accent-500 shadow-glow-accent;
   }

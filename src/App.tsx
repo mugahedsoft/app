@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingCart, Pizza } from 'lucide-react';
-import { broast, fatayerShami, fatayerSweet, juices, pizzas, sandwiches } from './data/menu';
 import { CartView } from './components/CartView';
 import { CustomerForm } from './components/CustomerForm';
 import { storage } from './utils/storage';
+import { loadMenuData } from './utils/menuStorage';
 import { generateWhatsAppMessage, sendToWhatsApp } from './utils/whatsapp';
 import { CartItem, Product, CustomerInfo } from './types';
 
@@ -65,6 +65,8 @@ function App() {
     return (value: string) => value.toLowerCase().includes(q);
   }, [searchQuery]);
 
+  const menuData = useMemo(() => loadMenuData(), []);
+
   const handleRemoveFromCart = (index: number) => {
     setCart(cart.filter((_, i) => i !== index));
   };
@@ -109,7 +111,7 @@ function App() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-             
+
               <div>
                 <h1 className="text-3xl font-bold text-white flex items-center gap-2 font-display">
                   <span>بيتزتي</span>
@@ -166,7 +168,7 @@ function App() {
               <div className="text-center mb-4">
                 <span className="menu-title">الفطائر</span>
               </div>
-              {fatayerShami.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.fatayerShami.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`fatayer-shami-${item.name}`} className="menu-row">
                   <span className="menu-name">فطائر شامية {item.name}</span>
                   <button
@@ -182,7 +184,7 @@ function App() {
               <div className="text-center mb-3">
                 <span className="menu-title">فطائر حلوه</span>
               </div>
-              {fatayerSweet.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.fatayerSweet.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`fatayer-sweet-${item.name}`} className="menu-row">
                   <span className="menu-name">{item.name}</span>
                   <button
@@ -199,7 +201,7 @@ function App() {
               <div className="text-center mb-4">
                 <span className="menu-title">البروست</span>
               </div>
-              {broast.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.broast.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`broast-${item.name}`} className="menu-row">
                   <span className="menu-name">{item.name}</span>
                   <button
@@ -225,7 +227,7 @@ function App() {
                 <span className="w-1/3 text-center">جامبو</span>
               </div>
 
-              {sandwiches.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.sandwiches.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`sand-${item.name}`} className="flex items-center justify-between gap-3 py-2">
                   <span className="menu-name w-1/3">{item.name}</span>
                   <div className="w-1/3 text-center">
@@ -260,7 +262,7 @@ function App() {
                 <span className="w-1/4 text-center">كبيره</span>
               </div>
 
-              {pizzas.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.pizzas.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`pizza-${item.name}`} className="flex items-center justify-between gap-3 py-2">
                   <span className="menu-name w-1/4">{item.name}</span>
                   <div className="w-1/4 text-center">
@@ -298,7 +300,7 @@ function App() {
                 <span className="menu-title">العصائر</span>
               </div>
 
-              {juices.filter(i => matchesSearch(i.name)).map((item) => (
+              {menuData.juices.filter(i => matchesSearch(i.name)).map((item) => (
                 <div key={`juice-${item.name}`} className="menu-row">
                   <span className="menu-name">{item.name}</span>
                   <button
